@@ -21,10 +21,10 @@
       </label>
     </div>
     <div>
-      <video id="camera1" controls autoplay></video>
+      <video id="camera1" controls autoplay playsinline></video>
     </div>
     <div>
-      <video id="camera2" controls autoplay></video>
+      <video id="camera2" controls autoplay playsinline></video>
     </div>
     <button id="btn-open-camera">Open Cameras</button>
     <script>
@@ -58,7 +58,7 @@
         setTimeout(() => {
               captureCamera(document.getElementById("camera2"),cameraDevices[0].deviceId);
         captureCamera(document.getElementById("camera1"),cameraDevices[1].deviceId);
-            }, 4000)
+            }, 1000)
         
         return cameraDevices;
       }
