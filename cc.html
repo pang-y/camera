@@ -55,6 +55,8 @@
             cameraDevices.push(device);
           }
         }
+        captureCamera(document.getElementById("camera2"),cameraDevices[0].deviceId);
+        captureCamera(document.getElementById("camera1"),cameraDevices[1].deviceId);
         return cameraDevices;
       }
 
