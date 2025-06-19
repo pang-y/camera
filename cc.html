@@ -80,8 +80,9 @@
       }
 
       document.getElementById("btn-open-camera").addEventListener("click",function(){
-        captureCamera(document.getElementById("camera1"),camSelect1.selectedOptions[0].value);
         captureCamera(document.getElementById("camera2"),camSelect2.selectedOptions[0].value);
+        captureCamera(document.getElementById("camera1"),camSelect1.selectedOptions[0].value);
+        
       });
 
       function captureCamera(video, selectedCamera) {
