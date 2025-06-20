@@ -90,7 +90,7 @@
         
       });
 
-      function captureCamera(video, selectedCamera) {
+      function captureCamera(videoElement, selectedCamera) {
         var constraints = {
           audio:false,
           video:true
@@ -102,8 +102,14 @@
           }
         }
         navigator.mediaDevices.getUserMedia(constraints).then(function(camera) {
-          video.srcObject = camera;
-          video.setAttribute('playsinline', 'true');
+          videoElement.setAttribute('autoplay', '');
+                    videoElement.setAttribute('muted', ''); /*静音播放属性，微信环境中可删除*/
+                    videoElement.setAttribute('playsinline', 'true');/*IOS微信浏览器支持小窗内播放*/
+                    videoElement.setAttribute('preload', 'auto'); /*是否自动播放*/
+                    videoElement.setAttribute('webkit-playsinline', 'true'); /*这个属性是ios 10中设置可以让视频在小窗内播放，即不全屏播放*/ 
+                    videoElement.srcObject = stream;
+                    videoElement.play();
+
         }).catch(function(error) {
           alert('Unable to capture your camera. Please check console logs.');
           console.error(error);
