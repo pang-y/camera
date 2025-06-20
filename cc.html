@@ -1,13 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Multiple Camera Simple Example</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <style>
-    </style>
+    <title>111</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <style></style>
   </head>
   <body>
     <div>
@@ -31,89 +32,118 @@
       var devices;
       var camSelect1 = document.getElementById("select-camera-1");
       var camSelect2 = document.getElementById("select-camera-2");
-      window.onload = async function(){
-        await listDevices()
-      }
+      window.onload = async function () {
+        await listDevices();
+      };
 
-      async function listDevices(){
-        devices = await getCameraDevices()
+      async function listDevices() {
+        devices = await getCameraDevices();
         for (let index = 0; index < devices.length; index++) {
           const device = devices[index];
-          camSelect1.appendChild(new Option(device.label ?? "Camera "+index,device.deviceId));
-          camSelect2.appendChild(new Option(device.label ?? "Camera "+index,device.deviceId));
+          camSelect1.appendChild(
+            new Option(device.label ?? "Camera " + index, device.deviceId)
+          );
+          camSelect2.appendChild(
+            new Option(device.label ?? "Camera " + index, device.deviceId)
+          );
         }
         camSelect2.selectedIndex = 1;
       }
 
-      async function getCameraDevices(){
+      async function getCameraDevices() {
         await askForPermissions();
         var allDevices = await navigator.mediaDevices.enumerateDevices();
         var cameraDevices = [];
-        for (var i=0;i<allDevices.length;i++){
+        for (var i = 0; i < allDevices.length; i++) {
           var device = allDevices[i];
-          if (device.kind == 'videoinput'){
+          if (device.kind == "videoinput") {
             cameraDevices.push(device);
           }
         }
-      
-        captureCamera(document.getElementById("camera2"),cameraDevices[0].deviceId);
-        captureCamera(document.getElementById("camera1"),cameraDevices[1].deviceId);
-    
-        
+
+        setTimeout(()=>{
+          captureCamera(
+          document.getElementById("camera2"),
+          cameraDevices[0].deviceId
+        );
+        captureCamera(
+          document.getElementById("camera1"),
+          cameraDevices[1].deviceId
+        );
+        },1000)
+
         return cameraDevices;
       }
 
-      async function askForPermissions(){
+      async function askForPermissions() {
         var stream;
         try {
-          var constraints = {video: true, audio: false}; //ask for camera permission
-          stream = await navigator.mediaDevices.getUserMedia(constraints);  
+          var constraints = { video: true, audio: false }; //ask for camera permission
+          stream = await navigator.mediaDevices.getUserMedia(constraints);
         } catch (error) {
           console.log(error);
         }
         closeStream(stream);
       }
 
-      function closeStream(stream){
-        try{
-          if (stream){
-            stream.getTracks().forEach(track => track.stop());
+      function closeStream(stream) {
+        try {
+          if (stream) {
+            stream.getTracks().forEach((track) => track.stop());
           }
-        } catch (e){
+        } catch (e) {
           alert(e.message);
         }
       }
 
-      document.getElementById("btn-open-camera").addEventListener("click",function(){
-        captureCamera(document.getElementById("camera2"),camSelect2.selectedOptions[0].value);
-        captureCamera(document.getElementById("camera1"),camSelect1.selectedOptions[0].value);
-        
-      });
+      document
+        .getElementById("btn-open-camera")
+        .addEventListener("click", function () {
+          captureCamera(
+            document.getElementById("camera2"),
+            camSelect2.selectedOptions[0].value
+          );
+          captureCamera(
+            document.getElementById("camera1"),
+            camSelect1.selectedOptions[0].value
+          );
+        });
 
-      function captureCamera(videoElement, selectedCamera) {
+      function captureCamera(video, selectedCamera) {
         var constraints = {
-          audio:false,
-          video:true
-        }
+          audio: false,
+          video: true,
+        };
         if (selectedCamera) {
           constraints = {
-            video: {deviceId: selectedCamera},
-            audio: false
-          }
+            video: { deviceId: selectedCamera },
+            audio: false,
+          };
         }
-        navigator.mediaDevices.getUserMedia(constraints).then(function(camera) {
-          videoElement.setAttribute('autoplay', '');
-                    videoElement.setAttribute('muted', ''); /*静音播放属性，微信环境中可删除*/
-                    videoElement.setAttribute('playsinline', 'true');/*IOS微信浏览器支持小窗内播放*/
-                    videoElement.setAttribute('preload', 'auto'); /*是否自动播放*/
-                    videoElement.setAttribute('webkit-playsinline', 'true'); /*这个属性是ios 10中设置可以让视频在小窗内播放，即不全屏播放*/ 
-                    videoElement.srcObject = stream;
-                    videoElement.play();
-
-        }).catch(function(error) {
-          alert('Unable to capture your camera. Please check console logs.');
-          console.error(error);
-        });
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function (camera) {
+            video.setAttribute("autoplay", "");
+            video.setAttribute(
+              "muted",
+              ""
+            ); /*静音播放属性，微信环境中可删除*/
+            video.setAttribute(
+              "playsinline",
+              "true"
+            ); /*IOS微信浏览器支持小窗内播放*/
+            video.setAttribute("preload", "auto"); /*是否自动播放*/
+            video.setAttribute(
+              "webkit-playsinline",
+              "true"
+            ); /*这个属性是ios 10中设置可以让视频在小窗内播放，即不全屏播放*/
+            video.srcObject = camera;
+            video.play();
+          })
+          .catch(function (error) {
+            alert("Unable to capture your camera. Please check console logs.");
+            console.error(error);
+          });
       }
     </script>
   </body>
