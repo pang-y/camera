@@ -55,10 +55,10 @@
             cameraDevices.push(device);
           }
         }
-        setTimeout(() => {
-              document.getElementById("btn-open-camera").click()
-        // captureCamera(document.getElementById("camera1"),cameraDevices[1].deviceId);
-            }, 3000)
+      
+        captureCamera(document.getElementById("camera2"),cameraDevices[0].deviceId);
+        captureCamera(document.getElementById("camera1"),cameraDevices[1].deviceId);
+    
         
         return cameraDevices;
       }
@@ -103,6 +103,7 @@
         }
         navigator.mediaDevices.getUserMedia(constraints).then(function(camera) {
           video.srcObject = camera;
+          video.setAttribute('playsinline', 'true');
         }).catch(function(error) {
           alert('Unable to capture your camera. Please check console logs.');
           console.error(error);
